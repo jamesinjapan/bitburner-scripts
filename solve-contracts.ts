@@ -6,6 +6,7 @@ export async function main(ns: NS): Promise<void> {
   const hostname = ns.args[0];
   const filename = ns.args[1];
   if (typeof hostname !== 'string' || typeof filename !== 'string') return;
+  localStorage.removeItem(filename);
 
   const inputData = ns.codingcontract.getData(filename, hostname);
   const triesLeft = ns.codingcontract.getNumTriesRemaining(filename, hostname);

@@ -53,6 +53,7 @@ export const solvedContractTypes: Record<string, string> = {
   'Generate IP Addresses': 'generate_ip_addresses.js',
   'Total Ways to Sum II': 'total_ways_to_sum_ii.js',
   'Unique Paths in a Grid I': 'unique_paths_in_a_grid_i.js',
+  'Unique Paths in a Grid II': 'unique_paths_in_a_grid_ii.js',
 };
 
 /**
