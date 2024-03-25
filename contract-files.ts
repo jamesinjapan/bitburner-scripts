@@ -6,8 +6,8 @@ import { NS } from '@ns';
 const contractBoxId = 'contracts-box';
 const contractBoxTitle = 'Contract Files';
 const contractBoxIcon = '\ueb67';
-const position = 4;
-const contractBoxClasses = `custom-box-${position} custom-box c`;
+const position = 2;
+const contractBoxClasses = `custom-box-${position} custom-box`;
 
 interface FileData {
   hostname: string;

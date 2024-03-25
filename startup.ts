@@ -5,7 +5,8 @@ import { NS } from '@ns';
 async function restart(ns: NS, script: string): Promise<void> {
   ns.scriptKill(script, 'home');
   ns.tprint(`[${helpers.timestamp()}] Running ${script}`);
-  ns.run(script);
+  const process = ns.run(script);
+  if (!process) ns.tprint("Couldn't run ", script);
   await helpers.sleep(100);
 }
 
@@ -19,6 +20,10 @@ export async function main(ns: NS) {
 
   helpers.addSidebarFunctions();
 
+  ns.scriptKill('hack.js', 'home');
+  ns.scriptKill('grow.js', 'home');
+  ns.scriptKill('weaken.js', 'home');
+
   if (ns.fileExists('Formulas.exe')) {
     ns.scriptKill('hack-maximizer.js', 'home');
     await restart(ns, 'hack-orchestrator.js');
@@ -28,15 +33,16 @@ export async function main(ns: NS) {
   }
 
   const scripts = [
+    'grow-capabilities.js',
     'scan.js',
     'get-root-access.js',
     'infiltrate.js',
     'auto-infiltrate.js',
     'purchase-hack-nodes.js',
     'purchase-servers.js',
+    'work-manager.js',
     'gang-manager.js',
     'overview.js',
-    'notifications.js',
     'server-list.js',
     'local-files.js',
     'contract-files.js',

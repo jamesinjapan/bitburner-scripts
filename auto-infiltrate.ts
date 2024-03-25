@@ -10,22 +10,12 @@ export async function main(ns: NS): Promise<void> {
   while (true) {
     const doc = eval('document');
     const targets: Record<string, string[]> = {
-      'Sector-12': [
-        'MegaCorp',
-        "Joe's Guns",
-        'DeltaOne',
-        'Icarus Microsystems',
-        'Alpha Enterprises',
-        'Universal Energy',
-        'Carmichael Security',
-        'Blade Industries',
-        'Four Sigma',
-      ],
-      Aevum: ['ECorp', 'ClarkeIncorporated', 'GalacticCybersystems', 'RhoConstruction'],
-      Chongqing: ['KuaiGong International', 'Solaris Space Systems'],
-      Volhaven: ['NWO', 'Helios Labs', 'CompuTek'],
-      'New Tokyo': ['DefComm', 'Global Pharmaceuticals'],
-      Ishima: ['Storm Technologies', 'Omega Software'],
+      'Sector-12': ['MegaCorp', 'Blade Industries', 'Four Sigma'],
+      Aevum: ['ECorp', 'ClarkeIncorporated', 'Bachman & Associates', 'Fulcrum Technologies'],
+      Chongqing: ['KuaiGong International'],
+      Volhaven: ['NWO', 'OmniTek Incorporated'],
+      'New Tokyo': ['DefComm'],
+      Ishima: ['Storm Technologies'],
     };
 
     try {

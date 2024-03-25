@@ -7,7 +7,7 @@ const serverList: Record<string, helpers.ServerFull> = {};
 const serverBoxId = 'servers-box';
 const serverBoxTitle = 'Servers';
 const serverBoxIcon = '\ueba3';
-const position = 2;
+const position = 3;
 const serverBoxClasses = `custom-box-${position} custom-box c`;
 
 function getUniqueId(string: string): string {

@@ -8,12 +8,12 @@ interface ProgramPortMap {
   callableFn: Function;
 }
 
-function openPortsCount(target: helpers.Server): number {
+function openPortsCount(target: helpers.ServerFull): number {
   const ports = [target.sshPortOpen, target.ftpPortOpen, target.smtpPortOpen, target.httpPortOpen, target.sqlPortOpen];
   return ports.filter(Boolean).length;
 }
 
-function openRequiredPorts(ns: NS, target: helpers.Server): boolean {
+function openRequiredPorts(ns: NS, target: helpers.ServerFull): boolean {
   const requiredPorts = target.numOpenPortsRequired || ns.getServerNumPortsRequired(target.hostname);
   let openPorts = openPortsCount(target);
   // ns.tprint(`${target.hostname}: Required open ports: ${requiredPorts} Current open ports: ${openPorts}`)
@@ -38,7 +38,7 @@ function openRequiredPorts(ns: NS, target: helpers.Server): boolean {
   return false;
 }
 
-function getRootAccess(ns: NS, target: helpers.Server): boolean {
+function getRootAccess(ns: NS, target: helpers.ServerFull): boolean {
   const readyToNuke = openRequiredPorts(ns, target);
   if (!readyToNuke) return false;
 
@@ -47,7 +47,7 @@ function getRootAccess(ns: NS, target: helpers.Server): boolean {
   return true;
 }
 
-function canInstallBackdoor(server: helpers.Server, currentHackingLevel: number): boolean {
+function canInstallBackdoor(server: helpers.ServerFull, currentHackingLevel: number): boolean {
   if (!server.requiredHackingSkill) return false;
 
   return (
@@ -59,7 +59,8 @@ function canInstallBackdoor(server: helpers.Server, currentHackingLevel: number)
 }
 
 export async function main(ns: NS): Promise<void> {
-  let serverList: Record<string, helpers.Server> = {};
+  localStorage.removeItem('notificationsBackdoor');
+  let serverList: Record<string, helpers.ServerFull> = {};
   while (true) {
     const serverListRaw = localStorage.getItem('serverListData');
     if (!serverListRaw) {
@@ -67,23 +68,30 @@ export async function main(ns: NS): Promise<void> {
       continue;
     }
 
-    const backdoorNotifications = [];
+    // const backdoorNotifications = [];
     const currentHackingLevel = ns.getHackingLevel();
-    const serverList: Record<string, helpers.Server> = JSON.parse(serverListRaw);
+    const serverList: Record<string, helpers.ServerFull> = JSON.parse(serverListRaw);
     for (const hostname of Object.keys(serverList)) {
       const server = serverList[hostname];
-      if (server.hasAdminRights && server.backdoorInstalled) continue;
+      if ((server.hasAdminRights && server.backdoorInstalled) || server.purchasedByPlayer) continue;
 
       if (!server.hasAdminRights) {
         getRootAccess(ns, server);
       }
 
       if (canInstallBackdoor(server, currentHackingLevel)) {
-        backdoorNotifications.push(server);
+        ns.singularity.connect('home');
+        for (const parent of server.parents) {
+          ns.singularity.connect(parent);
+        }
+        ns.singularity.connect(server.hostname);
+        await ns.singularity.installBackdoor();
+        ns.singularity.connect('home');
+        // backdoorNotifications.push(server);
       }
     }
 
-    localStorage.setItem('notificationsBackdoor', JSON.stringify(backdoorNotifications));
+    // localStorage.setItem('notificationsBackdoor', JSON.stringify(backdoorNotifications));
     await helpers.sleep(100);
   }
 }

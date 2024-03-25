@@ -8,7 +8,7 @@ import { NS } from '@ns';
 const fileBoxId = 'files-box';
 const fileBoxTitle = 'Local Files';
 const fileBoxIcon = '\ueaf0';
-const position = 3;
+const position = 4;
 const fileBoxClasses = `custom-box-${position} custom-box c`;
 
 const categoryMessage = 'messages';
